@@ -5,12 +5,11 @@ import math
 import os 
 
 colors = {
-    "C": "\033[39m",
-    "U": "\033[32m", 
-    "R": "\033[36m",  
-    "E": "\033[35m",  
-    "L": "\033[33m", 
-    "RESET": "\033[0m"  
+    "C": 39, #default
+    "U": 32, #green
+    "R": 36, #blue
+    "E": 35, #purple
+    "L": 33, #yellow
 }
 
 rarity = {
@@ -68,7 +67,7 @@ def rolling():
     print("Rolling for your labubu......")
     print('                ↓')
     for i in range(50):
-        c_show = [f"{colors[char]}{char}{colors['RESET']}" if char in colors else char for char in show]
+        c_show = [f"\033[{colors[char]}m{char}\033[0m" if char in colors else char for char in show]
         print('   '.join(c_show), end='\r')
         time.sleep(i/70)
         show = show[-1:] + show[:-1]
