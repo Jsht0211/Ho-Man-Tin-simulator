@@ -22,11 +22,11 @@ rarity = {
 
 chances = [1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,4,4,5]
 
-class labubu:
-    def __init__(self, __name, __efficiency, __age, __gender):
-        self.name = __name
-        self.efficiency = __efficiency
-        self.age = __age
+class Labubu:
+    def __init__(self, name, efficiency, age, gender):
+        self.name = name
+        self.efficiency = efficiency
+        self.age = age
     
     def kill(self):
         print(f'{self.name} has been killed!')
@@ -43,7 +43,7 @@ class labubu:
         print(f'{self.name} and {second_labubu.name} have combined!')
         del second_labubu
     
-    def givehead(self, second_labubu):
+    def giveHead(self, second_labubu):
         if self.gender == second_labubu.gender:
             print("They are not suitable for giving head to each other!")
             print("Unlock gender change tool to perform this act!")
@@ -54,8 +54,19 @@ class labubu:
                 second_labubu.efficiency += 50
             print(f'{self.name} and {second_labubu} have given head!')
 
-    def sextransfer(self):
-        self.gender = "M" if self.gender == "F" else self.gender = "F"     
+    def sexTransfer(self):
+        if self.gender == "F":
+            self.gender = "M" 
+        else: 
+            self.gender = "F"     
+
+def quickOpen():
+    a = chances[random.randint(0,len(chances)-1)]
+    if a in rarity:
+        b = rarity[a]
+    print("You have gotten a labubu with the",b,"rarity!")
+    return b
+
 
 def rolling():
     show = ['','','','','','','','','']
@@ -75,7 +86,9 @@ def rolling():
         b = chances[a]
         if b in rarity:
             show[0] = rarity[b]
-    return show[4]
+    print()
+    print("You have gotten a labubu with the",show[5],"rarity!")
+    return show[5]
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -102,7 +115,7 @@ Good luck!
     input()
     home()
 
-def exitgame():
+def exitGame():
     print("Thank you for playing;.")
     exit()
 
@@ -127,14 +140,14 @@ Press 2 to start the game
         except ValueError:
             user = input("Wrong data type, input again:")
     if user == 0:
-        exitgame()
+        exitGame()
     elif user == 1:
         rules()
     elif user == 2:
         startmain()
 
 #main part
-print(bold("The Ho Man Tin simulator"))
+print("Welcome to Ho Man Tin simulator")
 print('''
 This is a game where you can fullfil your fantasy of being Ho Man Tin.
 You can collect labubus, controll them, make them work.
