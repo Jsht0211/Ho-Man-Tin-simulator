@@ -60,12 +60,14 @@ class Labubu:
         if self.gender == second_labubu.gender:
             print("They are not suitable for giving head to each other!")
             print("Unlock gender change tool to perform this act!")
+            return 0
         else:
             if self.gender == "M":
                 self.efficiency += 50 
             else:
                 second_labubu.efficiency += 50
             print(f'{self.name} and {second_labubu} have given head!')
+            return 1
 
     def sexTransfer(self):
         if self.gender == "F":
@@ -105,6 +107,19 @@ def rolling():
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def flashingText(text,delay_in_sec,times_flashed):
+    for i in range(times_flashed):
+        print(text)
+        time.sleep(delay_in_sec)
+        clear()
+        time.sleep(delay_in_sec)
+
+def printStepByStep(text,delay_in_sec,stop_time_in_sec):
+    for i in range(len(text)):
+        print(text[i],end = '',flush = True)
+        time.sleep(delay_in_sec)
+    time.sleep(stop_time_in_sec)
 
 def bold(text):
     return f"\033[1m{text}\033[0m"
@@ -160,7 +175,26 @@ Press 4 to experience infinite gambling, infinite joy
     if user == 0:
         exitGame()
     elif user == 1:
+        clear()
+        printStepByStep(f"Hey {Player['name']}, just Jessie here checking you out.",0.05,1)
+        clear()
+        printStepByStep("You remember your plan to discover the truth of this pandemic?",0.05,1)
+        clear()
+        printStepByStep("Hey...",0.05,1)
+        clear()
+        printStepByStep("I've found these kind of creatures...",0.05,1)
+        clear()
+        printStepByStep("They produce like these kind of liquid...",0.05,1)
+        clear()
+        printStepByStep("You can eat it and i think we can make great money off it...",0.05,1)
+        clear()
+        printStepByStep("I have to go tho, bye!",0.05,1)
+        clear()
+        flashingText("Jessie ended the call",1,3)
+        clear()
+        printStepByStep("A month later, you find yourself in a lab with labubus",0.05,1)
         startMain()
+
     elif user == 2:
         rules()
     elif user == 3:
@@ -177,13 +211,15 @@ def plot():
     clear()
     print('''
 You are the one and only Ho Man Tin.
-In the year 2050, the world as we know it has vanished due to the devastating nuclear war.
+In the year 2050, the world as we know it has vanished due to the devastating pandemic.
+Only around 10 thousands humans survive, living in settlements scattered around the globe.
+Living on limited supplies of wheat, livestock is a thing of the past.
 You, as the one of the lucky survivors of the war has discovered a special animal called:
         ''')
     print(bold("Labubu"))
     print('''
 You discovered that they can produce a liquid called load.
-You decided to make use of that and go on a journey of conquering the world...
+You decided to make use of that and go on a journey of discovering the truth...
         '''
         )
     print("Press anything to return to the homepage:")
@@ -193,15 +229,19 @@ You decided to make use of that and go on a journey of conquering the world...
 def buyToolsPage():
     clear()
     print(bold("Tools Market"),end = '')
-    print("---------------------------------------------------------")
-    print("Here you can buy tools to help you collect more loads.")
-    print("Press the corresponding keys to buy the tools.")
+    print('''
+---------------------------------------------------------
+Here you can buy tools to help you collect more loads.
+Press the corresponding keys to buy the tools.
+---------------------------------------------------------
+        '''
+        )
 
 #main part
 clear()
 print(bold("Welcome to Ho Man Tin simulator"))
 print('''
-This is a game where you can fullfil your fantasy of being Ho Man Tin.
+This is a game where you can fulfill your fantasy of being Ho Man Tin.
 You can collect labubus, controll them, make them work.
 Must importantly, use the load, buy weapons and conquer the world.
 You won't get much load... Will you?
@@ -217,6 +257,6 @@ print("Welcome,",Player["name"]+"!")
 print("Press anything to continue.")
 input()
 while True:
-    home()
+    home()  
 
 
