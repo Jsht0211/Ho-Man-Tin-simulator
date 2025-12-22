@@ -40,6 +40,16 @@ class Labubu:
         self.name = name
         self.efficiency = efficiency
         self.age = age
+        self.gender = gender
+
+    def __str__(self):
+        return ("Name: " + self.name + '\n' +
+                "Efficiency: " + str(self.efficiency) + '\n' +
+                "Age: " + str(self.age) + '\n' +
+                "Gender: " + self.gender)
+
+    def __repr__(self):
+        return "<Labubu Object>\n" + str(self)
     
     def kill(self):
         print(f'{self.name} has been killed!')
