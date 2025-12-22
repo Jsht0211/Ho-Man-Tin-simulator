@@ -15,10 +15,14 @@ You can simply play the game by running the file with `python`
 The game can be run anywhere where python is available, but a terminal provides the best playing experience
 
 # Description
-In this game, you are going to farm a bunch of Ho Man Tin's favourite creatures -- ***Labubu***
+You are Ho Man Tin, the one of the only survivor of the devastating global pandemic which almost wiped out the whole world
 
-They produce a creamy liquid called ***load***
+You discovered a creature called ***Labubu*** and found out that they produce a liquid called ***load***
 
-By collecting ***load***, you can buy different tools and increase the rate of load production
+You decided to sell the liquid as food and use that money to buy tools, armor, and weapons
 
-You won't collect much load... Or will you?
+You are determined to find out the truth behind this pandemic by going on an adventure
+
+You won't get lost, will you?
+
+
