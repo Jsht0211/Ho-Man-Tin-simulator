@@ -30,24 +30,46 @@ rarity = {
 
 chances = [1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,4,4,5]
 
-Player = {
-    "name":'',
-    "money": 20,
-    "level":0,
-    "time_played":0,
-    "Labubu_slot":10,
-    "Labubu_owned":0,
-    "helmet_equiped":"",
-    "chestplate_equiped":"",
-    "pants_equiped":"",
-    "shoes_equiped":"",
-    "sword_equiped":"",
-    "long_range_equiped":"",
-    "attack_stat":0,
-    "defence_stat":0,
-    "load_efficiency_in_sec":0,
-    "lives": 1   #you only live once!
-}
+class Player:
+    def __init__(self, name, money, level, Labubu_slot, Labubu_owned, helmet_equiped, chestplate_equiped, pants_equiped, shoes_equiped, sword_equiped,
+                long_range_equiped, attack_stat, defence_stat, load_efficiency_in_sec, lives):
+        self.name = name
+        self.money = money
+        self.level = level 
+        self.Labubu_slot = Labubu_slot
+        self.Labubu_owned = Labubu_owned
+        self.helmet_equiped = helmet_equiped
+        self.chestplate_equiped = chestplate_equiped
+        self.pants_equiped = pants_equiped
+        self.shoes_equiped = shoes_equiped
+        self.sword_equiped = sword_equiped
+        self.long_range_equiped = long_range_equiped
+        self.attack_stat = attack_stat
+        self.defence_stat = defence_stat
+        self.load_efficiency_in_sec = load_efficiency_in_sec
+        self.lives = lives
+
+    def __str__(self):
+        return ("Name:" + self.name + '\n' +
+                "Money:" + self.money + '\n' +
+                "Level:" + self.level + '\n' +
+                "Labubu slots:" + self.Labubu_slot + '\n' +
+                "Labubu owned:" + self.Labubu_owned + '\n' + 
+                "Helmet equiped:" + self.helmet_equiped + '\n' +
+                "Chestplate equiped:" + self.chestplate_equiped + '\n' +
+                "Pants equiped:" + self.pants_equiped + '\n' +
+                "Shoes equiped:" + self.shoes_equiped + '\n' +
+                "Sword equiped:" + self.sword_equiped + '\n' +  
+                "Long range equiped:" + self.long_range_equiped + '\n' +
+                "Attack stat:" + self.attack_stat + '\n' +
+                "Defence stat:" + self.defence_stat + '\n' +
+                "Load efficiency in sec:" + self.load_efficiency_in_sec + '\n' +
+                "Lives:" + self.lives)
+
+    def __repr__(self):
+        return "<Player Object>\n" + str(self)
+
+Player = Player("",20,0,10,0,"","","","","","",0,0,0,1)
 
 class Labubu:
     def __init__(self, name, efficiency, age, gender):
@@ -74,12 +96,6 @@ class Labubu:
         print(f'{self.name} efficiency increased to {self.efficiency}!')
         self.age -= 1
 
-    def combine(self, second_labubu):
-        self.efficiency = (self.efficiency + second_labubu.efficiency) * 1.5
-        self.age = (self.age + second_labubu.age) / 2                           #with a second thought i wont be using this,
-        print(f'{self.name} and {second_labubu.name} have combined!')           #i still kept it anyway                 
-        del second_labubu
-    
     def giveHead(self, second_labubu):
         if self.gender == second_labubu.gender:
             print("They are not suitable for giving head to each other!")
@@ -203,7 +219,7 @@ Press 4 to experience infinite gambling, infinite joy
         exitGame()
     elif user == 1:
         clear()
-        printStepByStep(f"Hey {Player['name']}, just Jessie here checking you out.",0.05,1)
+        printStepByStep(f"Hey {Player.name}, just Jessie here checking you out.",0.05,1)
         clear()
         printStepByStep("You remember your plan to discover the truth of this pandemic?",0.05,1)
         clear()
@@ -239,14 +255,14 @@ def startMain():
     global temp_time
     clear()
     now_time = time.time()
-    Player["money"] = Player["money"] + (now_time - temp_time) * Player["load_efficiency_in_sec"]  
+    Player.money = Player.money + (now_time - temp_time) * Player.load_efficiency_in_sec 
     temp_time = time.time()
-    Player["time_played"] = now_time - start_time
+    time_played = now_time - start_time
     print(bold("The HMT lab"))
     print(f'''
-You are in level: {Player["level"]}
-Time played in seconds: {f"{Player["time_played"]:.2f}"}
-Your money you have now: ${Player["money"]}
+You are in level: {Player.level}
+Time played in seconds: {f"{time_played:.2f}"}
+Your money you have now: ${Player.money}
 -------------------------------------------------------------
 This is the menu of the game.
 -------------------------------------------------------------
@@ -335,13 +351,13 @@ You won't get lost... Will you?
 print("Press anything to continue:")
 input()
 clear()
-Player["name"] = input("What is your name?")
-while Player["name"] == '':
-    Player["name"] = input("Username cannot be empty. What is your name?")
-print("Welcome,",Player["name"]+"!")
+Player.name = input("What is your name?")
+while Player.name == "":
+    Player.name = input("Username cannot be empty. What is your name?")
+print("Welcome,",Player.name+"!")
 print("Press anything to continue:")
 clear()
-user = input(f"{Player["name"]}, do you love Ho Man Tin?(hint: say yes)")
+user = input(f"{Player.name}, do you love Ho Man Tin?(hint: say yes)")
 user = user.lower()
 permit = True
 if user != "yes":
