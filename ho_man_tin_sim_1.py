@@ -30,6 +30,27 @@ rarity = {
 
 chances = [1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,4,4,5]
 
+class Bosses:
+    def __init__(self, name : str, level_correspond : int, hp : int, defence_stat : int, attack_stat : str, attack_type : str, description : str):
+        self.name = name
+        self.level_correspond = level_correspond
+        self.hp = hp
+        self.defence_stat = defence_stat
+        self.attack_stat = attack_stat
+        self.attack_type = attack_type
+        self.description = description
+    
+    def __str__(self):
+        return ("Name:" + self.name + '\n' + 
+                "Level:" + str(self.level_correspond) + '\n' +
+                "HP:" + str(self.hp) + '\n' + 
+                "Defence stat:" + str(self.defence_stat) + '\n' +
+                "Attack stat:" + str(self.attack_stat) + '\n' + 
+                "Type of attack:" + self.attack_type + '\n')
+
+    def __des__(self):
+        return (self.description)
+
 class Items:
     def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float):
         self.name = name
@@ -46,7 +67,7 @@ class Items:
     def __str__(self):
         return ("Name:" + self.name + '\n' + 
                 "Type:" + self.type_of_item + '\n' +
-                "Price" + str(self.price) + '\n') 
+                "Price:" + str(self.price) + '\n') 
     
     def __repr__(self):
         return "<Items Object>\n" + str(self)
@@ -58,20 +79,28 @@ class Armor(Items):
         self.defence_stat = defence_stat
         self.added_hp = added_hp
 
-    def __str__(self);
+    def __str__(self):
         return (super().__str__() + 
-                "Defence stat" + str(self.defence_stat) + '\n' + 
-                "Added hp:" + str(self.added_hp) + '\n')
+                "Defence stat:" + str(self.defence_stat) + '\n' + 
+                "Added hp:" + str(self.added_hp))
 
 class Tools(Items):
     def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float, effect : str):
         super().__init__(name, type_of_item, __level_required_to_obtain, __base_price, price)
         self.effect = effect
     
-    def 
+    def __str__(self):
+        return (super().__str__() + 
+                "Effect:" + str(self.effecct))
 
+class Weapons(Items):
+    def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float, attack_stat : int):
+        super().__init__(name, type_of_item, __level_required_to_obtain, __base_price, price)
+        self.attack_stat = attack_stat
 
-
+    def __str__(self):
+        return (super().__str__() +
+                "Attack stat:" + str(self.attack_stat))
 
 class Player:
     def __init__(self, name, money, level, Labubu_slot, Labubu_owned, helmet_equiped, chestplate_equiped, pants_equiped, shoes_equiped, sword_equiped,
@@ -120,7 +149,7 @@ class Player:
     def __repr__(self):
         return "<Player Object>\n" + str(self)
 
-Player = Player("",20,0,10,0,"","","","","","",0,0,0,1)
+Player = Player("",20,0,10,0,"","","","","","",0,0,0,1,100)
 
 class Labubu:
     def __init__(self, name, efficiency, age, gender):
@@ -158,7 +187,7 @@ class Labubu:
                 print(f"{second_labubu.name} has given {self.name} head!") 
             else:
                 second_labubu.efficiency += 50
-                print(f"{self.name} has given {second_labubu.name} head!")      #well they cant both give each other head can they?
+                print(f"{self.name} has given {second_labubu.name} head!")      
             return True
 
     def sexTransfer(self):
@@ -354,7 +383,30 @@ Press enter to refresh
     elif user == 6:
         buyWeaponPage()
     elif user == 7:
-        journeyMap()        #include boss stats, do it in this style: ----------x----------x---------x--------x------x
+        journeyMap(Player)        #include boss stats, not done yet, need to include boss stats 
+
+def journeyMap(Player : object):
+    level = Player.level
+    print("Your current level:", level)
+    Map = [
+            ["s               ","1","               ","2","               ","3","               ","4","               ","5"],
+            ["^---------------","x","---------------","x","---------------","x","---------------","x","---------------","x"]
+    ]
+    for i in range(1,level*2,2):
+        Map[1][i] = "^"
+    for row in Map:
+        print("".join(row))
+    user = input("Input the number of the level you want to view(input nothing to go back to main page):")                      
+    while type(user) == str:
+        try:
+            level_viewing = int(user)
+            if level_viewing > 5 or level_viewing < 1:
+                user = input("Input the number of the level you want to view(out of range):")
+        except ValueError:
+            if user == "":
+                startMain()
+            else:
+                user = input("Input invalid, input again:")
 
 def plot():
     clear()
