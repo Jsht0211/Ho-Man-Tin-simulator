@@ -3,14 +3,10 @@ import time
 import random
 import math
 import os 
+import json
 
-tools_owned = {
-    "booster":0,
-    "horny_potion":0,
-    "combine_potion":0,
-    "sexchange_potion":0,
-    "totem_of_undying":0
-}
+with open("config.json") as config:
+    config = json.load(config)
 
 colors = {
     "C": 39, #default
@@ -28,16 +24,23 @@ rarity = {
     5: "L"
 }
 
+tools = {
+    1:"Booster",
+    2:"Horny potion",
+    3:"Combine potion",
+    4:"Sex change potion",
+    5:"Totem of undying"
+    }
+
 chances = [1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,4,4,5]
 
 class Bosses:
-    def __init__(self, name : str, level_correspond : int, hp : int, defence_stat : int, attack_stat : str, attack_type : str, description : str):
+    def __init__(self, name : str, level_correspond : int, hp : int, defence_stat : int, attack_stat : str, description : str):
         self.name = name
         self.level_correspond = level_correspond
         self.hp = hp
         self.defence_stat = defence_stat
         self.attack_stat = attack_stat
-        self.attack_type = attack_type
         self.description = description
     
     def __str__(self):
@@ -45,19 +48,19 @@ class Bosses:
                 "Level:" + str(self.level_correspond) + '\n' +
                 "HP:" + str(self.hp) + '\n' + 
                 "Defence stat:" + str(self.defence_stat) + '\n' +
-                "Attack stat:" + str(self.attack_stat) + '\n' + 
-                "Type of attack:" + self.attack_type + '\n')
+                "Attack stat:" + str(self.attack_stat) + '\n')
 
     def __des__(self):
         return (self.description)
 
 class Items:
-    def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float):
+    def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float,__id : int):
         self.name = name
         self.level_required_to_obtain = __level_required_to_obtain
         self.base_price = __base_price
         self.type_of_item = type_of_item
         self.price = price
+        self.id = __id
 
     def checkAbleToObtain(self,Player : object):
         if Player.level >= self.level_required_to_obtain:
@@ -72,10 +75,9 @@ class Items:
     def __repr__(self):
         return "<Items Object>\n" + str(self)
 
-    
 class Armor(Items):
-    def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float, defence_stat : int, added_hp : int):
-        super().__init__(name, type_of_item, __level_required_to_obtain, __base_price, price)
+    def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float, __id : int,defence_stat : int, added_hp : int):
+        super().__init__(name, type_of_item, __level_required_to_obtain, __base_price, price, __id)
         self.defence_stat = defence_stat
         self.added_hp = added_hp
 
@@ -85,8 +87,8 @@ class Armor(Items):
                 "Added hp:" + str(self.added_hp))
 
 class Tools(Items):
-    def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float, effect : str):
-        super().__init__(name, type_of_item, __level_required_to_obtain, __base_price, price)
+    def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float, __id : int, effect : str):
+        super().__init__(name, type_of_item, __level_required_to_obtain, __base_price, price, __id)
         self.effect = effect
     
     def __str__(self):
@@ -94,8 +96,8 @@ class Tools(Items):
                 "Effect:" + str(self.effecct))
 
 class Weapons(Items):
-    def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float, attack_stat : int):
-        super().__init__(name, type_of_item, __level_required_to_obtain, __base_price, price)
+    def __init__(self, name : str, type_of_item : str, __level_required_to_obtain : int, __base_price : int, price : float, __id : int, attack_stat : int):
+        super().__init__(name, type_of_item, __level_required_to_obtain, __base_price, price, __id)
         self.attack_stat = attack_stat
 
     def __str__(self):
@@ -104,7 +106,7 @@ class Weapons(Items):
 
 class Player:
     def __init__(self, name, money, level, Labubu_slot, Labubu_owned, helmet_equiped, chestplate_equiped, pants_equiped, shoes_equiped, sword_equiped,
-                long_range_equiped, attack_stat, defence_stat, load_efficiency_in_sec, lives, hp):
+                long_range_equiped, attack_stat, defence_stat, load_efficiency_in_sec, hp):
         self.name = name
         self.money = money
         self.level = level 
@@ -119,7 +121,6 @@ class Player:
         self.attack_stat = attack_stat
         self.defence_stat = defence_stat
         self.load_efficiency_in_sec = load_efficiency_in_sec
-        self.lives = lives
         self.hp = hp
     
     def takeDamage(self, damage_taken : int):
@@ -143,13 +144,12 @@ class Player:
                 "Long range equiped:" + self.long_range_equiped + '\n' +
                 "Attack stat:" + self.attack_stat + '\n' +
                 "Defence stat:" + self.defence_stat + '\n' +
-                "Load efficiency in sec:" + self.load_efficiency_in_sec + '\n' +
-                "Lives:" + self.lives)
+                "Load efficiency in sec:" + self.load_efficiency_in_sec + '\n')
 
     def __repr__(self):
         return "<Player Object>\n" + str(self)
 
-Player = Player("",20,0,10,0,"","","","","","",0,0,0,1,100)
+Player = Player("",config["Player starting statistics"]["money"],config["Player starting statistics"]["level"],config["Player starting statistics"]["Labubu slot"],0,"","","","","","",0,0,0,config["Player starting statistics"]["hp"])
 
 class Labubu:
     def __init__(self, name, efficiency, age, gender):
@@ -236,11 +236,12 @@ def flashingText(text : str,delay_in_sec : float,times_flashed : int):
         clear()
         time.sleep(delay_in_sec)
 
-def printStepByStep(text : str,delay_in_sec : float,stop_time_in_sec : float):
+def printStepByStep(text : str,delay_in_sec : float):
     for i in range(len(text)):
         print(text[i],end = '',flush = True)
         time.sleep(delay_in_sec)
-    time.sleep(stop_time_in_sec)
+    input()
+    clear()
 
 def bold(text : str):
     return f"\033[1m{text}\033[0m"
@@ -299,23 +300,15 @@ Press 4 to experience infinite gambling, infinite joy
         exitGame()
     elif user == 1:
         clear()
-        printStepByStep(f"Hey {Player.name}, just Jessie here checking you out.",0.05,1)
-        clear()
-        printStepByStep("You remember your plan to discover the truth of this pandemic?",0.05,1)
-        clear()
-        printStepByStep("Hey...",0.05,1)
-        clear()
-        printStepByStep("I've found these kind of creatures...",0.05,1)
-        clear()
-        printStepByStep("They produce like these kind of liquid...",0.05,1)
-        clear()
-        printStepByStep("You can eat it and i think we can make great money off it...",0.05,1)
-        clear()
-        printStepByStep("I have to go tho, bye!",0.05,1)
-        clear()
+        printStepByStep(f"Hey {Player.name}, just Jessie here checking you out.",0.05)
+        printStepByStep("You remember your plan to discover the truth of this pandemic?",0.05)
+        printStepByStep("Hey...",0.05)
+        printStepByStep("I've found these kind of creatures...",0.05)
+        printStepByStep("They produce like these kind of liquid...",0.05)
+        printStepByStep("You can eat it and i think we can make great money off it...",0.05)
+        printStepByStep("I have to go tho, bye!",0.05)
         flashingText("Jessie ended the call",1,3)
-        clear()
-        printStepByStep("A month later, you find yourself in a lab with labubus",0.05,1)
+        printStepByStep("A month later, you find yourself in a lab with labubus.",0.05)
         start_time = time.time()
         temp_time = time.time()
         startMain()
@@ -377,16 +370,17 @@ Press enter to refresh
     elif user == 3:
         playerInventory()       #do grouping maybe???
     elif user == 4:
-        buyToolsPage()      
+        toolsMarket()      
     elif user == 5:
-        buyArmorPage()
+        armorMarket()
     elif user == 6:
-        buyWeaponPage()
+        weaponMarket()
     elif user == 7:
         journeyMap(Player)        #include boss stats, not done yet, need to include boss stats 
 
 def journeyMap(Player : object):
     level = Player.level
+    clear()
     print("Your current level:", level)
     Map = [
             ["s               ","1","               ","2","               ","3","               ","4","               ","5"],
@@ -427,7 +421,8 @@ You decided to make use of that and go on a journey of discovering the truth...
     input()
     home()
 
-def buyToolsPage():
+def toolsMarket():
+    global id
     clear()
     print(bold("Tools Market"),end = '')
     print('''
@@ -435,11 +430,33 @@ def buyToolsPage():
 Here you can buy tools to help you collect more loads.
 Press the corresponding keys to buy the tools.
 ---------------------------------------------------------
+0.Return to menu
+1.Booster
+2.Horny potion
+3.Combine potion
+4.Sex change potion
+5.Totem of undying
         '''
         )
-    print("Press anything to go back:")
-    input()
-    startMain()
+    id = input()
+    while type(id) == str:
+        try:
+            id = int(id)
+            if id > 5 or id < 0:
+                id = input("Unvalid input, input again:")
+        except ValueError:
+            id = input("Unvalid input, input again:")
+    if id == 0:
+        startMain()
+    else:
+        buyToolsPage(id)
+
+def buyToolsPage(id):
+    clear()
+    tool = tools[id]
+    money = Player.money
+
+
 
 #main part
 clear()
@@ -465,7 +482,7 @@ user = user.lower()
 permit = True
 if user != "yes":
     permit = False
-assert permit == True , "Go kill yourself..."       #no need to use assert but i just learned it so i wanna use
+assert permit == True , "Go kill yourself..."      
 print("Great! Press anything to continue:")
 input()
 while True:

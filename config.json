@@ -1,0 +1,11 @@
+{
+    "Player starting statistics": {
+        "money": 20,
+        "level": 0,
+        "Labubu slot": 10,
+        "hp": 100
+    },
+    "Tools disabled": {
+        "id": []
+    }
+}
