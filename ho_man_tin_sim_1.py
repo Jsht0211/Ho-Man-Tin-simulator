@@ -1,5 +1,6 @@
 #view source code only in risk of spoiler
 import time 
+import threading
 import random
 import math
 import os 
@@ -237,10 +238,17 @@ def flashingText(text : str,delay_in_sec : float,times_flashed : int):
         time.sleep(delay_in_sec)
 
 def printStepByStep(text : str,delay_in_sec : float):
+    thrd = threading.Thread(target=lambda: input(), daemon=True)
+    thrd.start()
     for i in range(len(text)):
-        print(text[i],end = '',flush = True)
+        if not thrd.is_alive(): break
+        print(text[i], end = '', flush = True)
         time.sleep(delay_in_sec)
-    input()
+    if not thrd.is_alive():
+        print("\033[H" + text, end="")
+        input()
+    else:
+        thrd.join()
     clear()
 
 def bold(text : str):
